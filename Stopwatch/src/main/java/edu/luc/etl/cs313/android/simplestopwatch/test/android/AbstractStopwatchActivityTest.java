@@ -1,11 +1,13 @@
 package edu.luc.etl.cs313.android.simplestopwatch.test.android;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
+import android.content.pm.ActivityInfo;
 import android.widget.Button;
 import android.widget.TextView;
 import edu.luc.etl.cs313.android.simplestopwatch.R;
@@ -30,6 +32,63 @@ public abstract class AbstractStopwatchActivityTest {
 	public void testActivityCheckTestCaseSetUpProperly() {
 		assertNotNull("activity should be launched successfully", getActivity());
 	}
+
+    // begin-method-testActivityScenarioIncReset
+    @Test
+    public void testActivityScenarioIncReset() {
+        assertTrue(getResetButton().performClick());
+        assertEquals(0, getDisplayedValue());
+        assertTrue(getIncButton().isEnabled());
+        assertFalse(getDecButton().isEnabled());
+        assertTrue(getResetButton().isEnabled());
+        assertTrue(getIncButton().performClick());
+        assertEquals(1, getDisplayedValue());
+        assertTrue(getIncButton().isEnabled());
+        assertTrue(getDecButton().isEnabled());
+        assertTrue(getResetButton().isEnabled());
+        assertTrue(getResetButton().performClick());
+        assertEquals(0, getDisplayedValue());
+        assertTrue(getIncButton().isEnabled());
+        assertFalse(getDecButton().isEnabled());
+        assertTrue(getResetButton().isEnabled());
+        assertTrue(getResetButton().performClick());
+    }
+    // end-method-testActivityScenarioIncReset
+
+    @Test
+    public void testActivityScenarioIncUntilFull() {
+        assertTrue(getResetButton().performClick());
+        assertEquals(0, getDisplayedValue());
+        assertTrue(getIncButton().isEnabled());
+        assertFalse(getDecButton().isEnabled());
+        assertTrue(getResetButton().isEnabled());
+        while (getIncButton().isEnabled()) {
+            final int v = getDisplayedValue();
+            assertTrue(getIncButton().performClick());
+            assertEquals(v + 1, getDisplayedValue());
+        }
+        assertFalse(getIncButton().isEnabled());
+        assertTrue(getDecButton().isEnabled());
+        assertTrue(getResetButton().isEnabled());
+        assertTrue(getResetButton().performClick());
+    }
+
+    // begin-method-testActivityScenarioRotation
+    @Test
+    public void testActivityScenarioRotation() {
+        assertTrue(getResetButton().performClick());
+        assertEquals(0, getDisplayedValue());
+        assertTrue(getIncButton().performClick());
+        assertTrue(getIncButton().performClick());
+        assertTrue(getIncButton().performClick());
+        assertEquals(3, getDisplayedValue());
+        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        assertEquals(3, getDisplayedValue());
+        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        assertEquals(3, getDisplayedValue());
+        assertTrue(getResetButton().performClick());
+    }
+    // end-method-testActivityScenarioRotation
 
     /**
      * Verifies the following scenario: time is 0.
