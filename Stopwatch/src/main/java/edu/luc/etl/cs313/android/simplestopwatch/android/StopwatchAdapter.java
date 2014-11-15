@@ -93,7 +93,4 @@ public class StopwatchAdapter extends Activity implements StopwatchUIUpdateListe
         model.onStartStop();
     }
 
-	public void onLapReset(final View view)  {
-        model.onLapReset();
-    }
 }
