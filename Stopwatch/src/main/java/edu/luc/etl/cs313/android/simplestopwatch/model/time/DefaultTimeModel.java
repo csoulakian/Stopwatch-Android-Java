@@ -1,5 +1,7 @@
 package edu.luc.etl.cs313.android.simplestopwatch.model.time;
 
+import android.widget.TextView;
+
 import static edu.luc.etl.cs313.android.simplestopwatch.common.Constants.*;
 
 /**
@@ -7,7 +9,7 @@ import static edu.luc.etl.cs313.android.simplestopwatch.common.Constants.*;
  */
 public class DefaultTimeModel implements TimeModel {
 
-	private int runningTime = 0;
+	private int runningTime = getDisplayedValue;
 
 	private int lapTime = -1;
 
@@ -18,7 +20,7 @@ public class DefaultTimeModel implements TimeModel {
 
     @Override
 	public void incRuntime() {
-		runningTime = (runningTime + SEC_PER_TICK) % SEC_PER_HOUR;
+		runningTime = (runningTime - 1);
 	}
 
     @Override
@@ -35,4 +37,9 @@ public class DefaultTimeModel implements TimeModel {
 	public int getLaptime() {
 		return lapTime;
 	}
+
+    protected int getDisplayedValue() {
+        final TextView t = (TextView) getActivity().findViewById(R.id.textview_value);
+        return Integer.parseInt(t.getText().toString().trim());
+    }
 }
