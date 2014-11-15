@@ -35,22 +35,9 @@ public abstract class AbstractStopwatchActivityTest {
 		assertNotNull("activity should be launched successfully", getActivity());
 	}
 
-    /**
-     * Verifies the following scenario: time is 0.
-     *
-     * @throws Throwable
-     */
-/*    this test isn't used anywhere
-    @Test
-    public void testActivityScenarioInit() throws Throwable {
-        getActivity().runOnUiThread(new Runnable() { @Override public void run() {
-            assertEquals(0, getDisplayedValue());
-        }});
-    }*/
-
 	/**
 	 * Verifies the following scenario: time is 0, press button 5 times,
-     * wait 4 seconds, expect time 3.
+     * wait 4 seconds, expect time 4.
 	 *
 	 * @throws Throwable
 	 */
@@ -69,13 +56,13 @@ public abstract class AbstractStopwatchActivityTest {
         runUiThreadTasks();
 		getActivity().runOnUiThread(new Runnable() { @Override public void run() {
             //expect running state
-            assertEquals(3, getDisplayedValue());
+            assertEquals(4, getDisplayedValue());
 		}});
 	}
 
 	/**
 	 * Verifies the following scenario: time is 0, press button 5 times, expect time 5,
-	 * wait 4 seconds, expect time 3, press button, expect time 0.
+	 * wait 4 seconds, expect time 4, press button, expect time 0.
 	 *
 	 * @throws Throwable
 	 */
@@ -94,7 +81,7 @@ public abstract class AbstractStopwatchActivityTest {
         runUiThreadTasks();
 		getActivity().runOnUiThread(new Runnable() { @Override public void run() {
             //expect running state
-            assertEquals(3, getDisplayedValue());
+            assertEquals(4, getDisplayedValue());
 			assertTrue(getButton().performClick());
 		}});
         runUiThreadTasks();
@@ -106,7 +93,7 @@ public abstract class AbstractStopwatchActivityTest {
 
     /**
      * Verifies the following scenario: time is 0, press button 5 times,
-     * wait 4 seconds, expect time 3, wait 3 seconds, expect time 0, indefinite beeping.
+     * wait 4 seconds, expect time 4, wait 4 seconds, expect time 0, indefinite beeping.
      *
      * @throws Throwable
      */
@@ -124,9 +111,9 @@ public abstract class AbstractStopwatchActivityTest {
         runUiThreadTasks();
         getActivity().runOnUiThread(new Runnable() { @Override public void run() {
             //expect running state
-            assertEquals(3, getDisplayedValue());
+            assertEquals(4, getDisplayedValue());
         }});
-        Thread.sleep(3000); // <-- do not run this in the UI thread!
+        Thread.sleep(4000); // <-- do not run this in the UI thread!
         runUiThreadTasks();
         getActivity().runOnUiThread(new Runnable() { @Override public void run() {
             //expect stopped state
@@ -137,7 +124,7 @@ public abstract class AbstractStopwatchActivityTest {
 
     /**
      * Verifies the following scenario: time is 0, press button 5 times,
-     * wait 7 seconds, expect time 0, indefinite beeping, press button, no beeping,
+     * wait 8 seconds, expect time 0, indefinite beeping, press button, no beeping,
      * expect time 0.
      *
      * @throws Throwable
@@ -152,7 +139,7 @@ public abstract class AbstractStopwatchActivityTest {
             assertTrue(getButton().performClick());
             assertTrue(getButton().performClick());
         }});
-        Thread.sleep(7000); // <-- do not run this in the UI thread!
+        Thread.sleep(8000); // <-- do not run this in the UI thread!
         runUiThreadTasks();
         getActivity().runOnUiThread(new Runnable() { @Override public void run() {
             //expect stopped state
@@ -168,57 +155,44 @@ public abstract class AbstractStopwatchActivityTest {
     // begin-method-testActivityScenarioInc
     @Test
     public void testActivityScenarioInc() {
-        assertTrue(getResetButton().performClick());
         assertEquals(0, getDisplayedValue());
-        assertTrue(getIncButton().isEnabled());
-        assertFalse(getDecButton().isEnabled());
-        assertTrue(getResetButton().isEnabled());
-        assertTrue(getIncButton().performClick());
-        assertEquals(1, getDisplayedValue());
-        assertTrue(getIncButton().isEnabled());
-        assertTrue(getDecButton().isEnabled());
-        assertTrue(getResetButton().isEnabled());
-        assertTrue(getResetButton().performClick());
-        assertEquals(0, getDisplayedValue());
-        assertTrue(getIncButton().isEnabled());
-        assertFalse(getDecButton().isEnabled());
-        assertTrue(getResetButton().isEnabled());
-        assertTrue(getResetButton().performClick());
+        assertTrue(getButton().performClick());
+        assertTrue(getButton().performClick());
+        assertEquals(2, getDisplayedValue());
     }
 
     // begin-method-testActivityScenarioIncUntilFull
     @Test
-    public void testActivityScenarioIncUntilFull() {
-        assertTrue(getResetButton().performClick());
-        assertEquals(0, getDisplayedValue());
-        assertTrue(getIncButton().isEnabled());
-        assertFalse(getDecButton().isEnabled());
-        assertTrue(getResetButton().isEnabled());
-        while (getIncButton().isEnabled()) {
+    public void testActivityScenarioIncUntilFull() throws Throwable {
+            final int max = 10;
             final int v = getDisplayedValue();
-            assertTrue(getIncButton().performClick());
-            assertEquals(v + 1, getDisplayedValue());
+            getActivity().runOnUiThread(new Runnable() { @Override public void run() {
+                assertEquals(0, getDisplayedValue());
+                while (v < max) {
+                    assertTrue(getButton().performClick());
+                    assertEquals(v + 1, getDisplayedValue());
+                }
+                //expect beep
+            }});
+            Thread.sleep(1000); // <-- do not run this in the UI thread!
+            //expect running state
+            runUiThreadTasks();
+            getActivity().runOnUiThread(new Runnable() { @Override public void run() {
+                assertEquals(9, getDisplayedValue());
+            }});
         }
-        assertFalse(getIncButton().isEnabled());
-        assertTrue(getDecButton().isEnabled());
-        assertTrue(getResetButton().isEnabled());
-        assertTrue(getResetButton().performClick());
-    }
 
     // begin-method-testActivityScenarioRotation
     @Test
     public void testActivityScenarioRotation() {
-        assertTrue(getResetButton().performClick());
         assertEquals(0, getDisplayedValue());
-        assertTrue(getIncButton().performClick());
-        assertTrue(getIncButton().performClick());
-        assertTrue(getIncButton().performClick());
-        assertEquals(3, getDisplayedValue());
+        assertTrue(getButton().performClick());
+        assertTrue(getButton().performClick());
+        assertEquals(2, getDisplayedValue());
         getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        assertEquals(3, getDisplayedValue());
+        assertEquals(2, getDisplayedValue());
         getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        assertEquals(3, getDisplayedValue());
-        assertTrue(getResetButton().performClick());
+        assertEquals(2, getDisplayedValue());
     }
 
 
