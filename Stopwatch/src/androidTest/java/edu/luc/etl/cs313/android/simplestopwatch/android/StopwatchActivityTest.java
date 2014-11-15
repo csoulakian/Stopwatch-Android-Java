@@ -41,7 +41,27 @@ public class StopwatchActivityTest extends ActivityInstrumentationTestCase2<Stop
         actualTest.testActivityScenarioRun();
     }
 
-    public void testActivityScenarioRunLapReset() throws Throwable {
-        actualTest.testActivityScenarioRunLapReset();
+    public void testActivityScenarioRunReset() throws Throwable {
+        actualTest.testActivityScenarioRunReset();
 	}
+
+    public void testActivityScenarioFullRun() throws Throwable {
+        actualTest.testActivityScenarioFullRun();
+    }
+
+    public void testActivityBeepTest() throws Throwable {
+        actualTest.testActivityBeepTest();
+    }
+
+    public void testActivityScenarioInc() throws Throwable {
+        actualTest.testActivityScenarioInc();
+    }
+
+    public void testActivityScenarioIncUntilFull() throws Throwable {
+        actualTest.testActivityScenarioIncUntilFull();
+    }
+
+    public void testActivityScenarioRotation() throws Throwable {
+        actualTest.testActivityScenarioRotation();
+    }
 }

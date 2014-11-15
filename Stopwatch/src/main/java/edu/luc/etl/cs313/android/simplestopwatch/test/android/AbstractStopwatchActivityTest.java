@@ -7,6 +7,8 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
+import android.app.Activity;
+import android.view.View;
 import android.content.pm.ActivityInfo;
 import android.widget.Button;
 import android.widget.TextView;
@@ -33,9 +35,139 @@ public abstract class AbstractStopwatchActivityTest {
 		assertNotNull("activity should be launched successfully", getActivity());
 	}
 
-    // begin-method-testActivityScenarioIncReset
+    /**
+     * Verifies the following scenario: time is 0.
+     *
+     * @throws Throwable
+     */
+/*    this test isn't used anywhere
     @Test
-    public void testActivityScenarioIncReset() {
+    public void testActivityScenarioInit() throws Throwable {
+        getActivity().runOnUiThread(new Runnable() { @Override public void run() {
+            assertEquals(0, getDisplayedValue());
+        }});
+    }*/
+
+	/**
+	 * Verifies the following scenario: time is 0, press button 5 times,
+     * wait 4 seconds, expect time 3.
+	 *
+	 * @throws Throwable
+	 */
+    @Test
+	public void testActivityScenarioRun() throws Throwable {
+		getActivity().runOnUiThread(new Runnable() { @Override public void run() {
+			assertEquals(0, getDisplayedValue());
+			assertTrue(getButton().performClick());
+            assertTrue(getButton().performClick());
+            assertTrue(getButton().performClick());
+            assertTrue(getButton().performClick());
+            assertTrue(getButton().performClick());
+            assertEquals(5, getDisplayedValue());
+		}});
+		Thread.sleep(4000); // <-- do not run this in the UI thread!
+        runUiThreadTasks();
+		getActivity().runOnUiThread(new Runnable() { @Override public void run() {
+            //expect running state
+            assertEquals(3, getDisplayedValue());
+		}});
+	}
+
+	/**
+	 * Verifies the following scenario: time is 0, press button 5 times, expect time 5,
+	 * wait 4 seconds, expect time 3, press button, expect time 0.
+	 *
+	 * @throws Throwable
+	 */
+    @Test
+	public void testActivityScenarioRunReset() throws Throwable {
+		getActivity().runOnUiThread(new Runnable() { @Override public void run() {
+			assertEquals(0, getDisplayedValue());
+            assertTrue(getButton().performClick());
+            assertTrue(getButton().performClick());
+            assertTrue(getButton().performClick());
+            assertTrue(getButton().performClick());
+            assertTrue(getButton().performClick());
+            assertEquals(5, getDisplayedValue());
+		}});
+		Thread.sleep(4000); // <-- do not run this in the UI thread!
+        runUiThreadTasks();
+		getActivity().runOnUiThread(new Runnable() { @Override public void run() {
+            //expect running state
+            assertEquals(3, getDisplayedValue());
+			assertTrue(getButton().performClick());
+		}});
+        runUiThreadTasks();
+		getActivity().runOnUiThread(new Runnable() { @Override public void run() {
+			//expect stopped state
+            assertEquals(0, getDisplayedValue());
+		}});
+	}
+
+    /**
+     * Verifies the following scenario: time is 0, press button 5 times,
+     * wait 4 seconds, expect time 3, wait 3 seconds, expect time 0, indefinite beeping.
+     *
+     * @throws Throwable
+     */
+    @Test
+    public void testActivityScenarioFullRun() throws Throwable {
+        getActivity().runOnUiThread(new Runnable() { @Override public void run() {
+            assertEquals(0, getDisplayedValue());
+            assertTrue(getButton().performClick());
+            assertTrue(getButton().performClick());
+            assertTrue(getButton().performClick());
+            assertTrue(getButton().performClick());
+            assertTrue(getButton().performClick());
+        }});
+        Thread.sleep(4000); // <-- do not run this in the UI thread!
+        runUiThreadTasks();
+        getActivity().runOnUiThread(new Runnable() { @Override public void run() {
+            //expect running state
+            assertEquals(3, getDisplayedValue());
+        }});
+        Thread.sleep(3000); // <-- do not run this in the UI thread!
+        runUiThreadTasks();
+        getActivity().runOnUiThread(new Runnable() { @Override public void run() {
+            //expect stopped state
+            assertEquals(0, getDisplayedValue());
+            //expect indefinite beeping
+        }});
+    }
+
+    /**
+     * Verifies the following scenario: time is 0, press button 5 times,
+     * wait 7 seconds, expect time 0, indefinite beeping, press button, no beeping,
+     * expect time 0.
+     *
+     * @throws Throwable
+     */
+    @Test
+    public void testActivityBeepTest() throws Throwable {
+        getActivity().runOnUiThread(new Runnable() { @Override public void run() {
+            assertEquals(0, getDisplayedValue());
+            assertTrue(getButton().performClick());
+            assertTrue(getButton().performClick());
+            assertTrue(getButton().performClick());
+            assertTrue(getButton().performClick());
+            assertTrue(getButton().performClick());
+        }});
+        Thread.sleep(7000); // <-- do not run this in the UI thread!
+        runUiThreadTasks();
+        getActivity().runOnUiThread(new Runnable() { @Override public void run() {
+            //expect stopped state
+            assertEquals(0, getDisplayedValue());
+            //expect indefinite beeping
+            assertTrue(getButton().performClick());
+            //expect no beeping
+            assertEquals(0, getDisplayedValue());
+        }});
+    }
+
+    //tests from ClickCounter
+    // begin-method-testActivityScenarioInc
+    @Test
+    public void testActivityScenarioInc() {
         assertTrue(getResetButton().performClick());
         assertEquals(0, getDisplayedValue());
         assertTrue(getIncButton().isEnabled());
@@ -53,8 +185,8 @@ public abstract class AbstractStopwatchActivityTest {
         assertTrue(getResetButton().isEnabled());
         assertTrue(getResetButton().performClick());
     }
-    // end-method-testActivityScenarioIncReset
 
+    // begin-method-testActivityScenarioIncUntilFull
     @Test
     public void testActivityScenarioIncUntilFull() {
         assertTrue(getResetButton().performClick());
@@ -88,81 +220,9 @@ public abstract class AbstractStopwatchActivityTest {
         assertEquals(3, getDisplayedValue());
         assertTrue(getResetButton().performClick());
     }
-    // end-method-testActivityScenarioRotation
 
-    /**
-     * Verifies the following scenario: time is 0.
-     *
-     * @throws Throwable
-     */
-    @Test
-    public void testActivityScenarioInit() throws Throwable {
-        getActivity().runOnUiThread(new Runnable() { @Override public void run() {
-            assertEquals(0, getDisplayedValue());
-        }});
-    }
 
-	/**
-	 * Verifies the following scenario: time is 0, press start, wait 5+ seconds, expect time 5.
-	 *
-	 * @throws Throwable
-	 */
-    @Test
-	public void testActivityScenarioRun() throws Throwable {
-		getActivity().runOnUiThread(new Runnable() { @Override public void run() {
-			assertEquals(0, getDisplayedValue());
-			assertTrue(getStartStopButton().performClick());
-		}});
-		Thread.sleep(5500); // <-- do not run this in the UI thread!
-        runUiThreadTasks();
-		getActivity().runOnUiThread(new Runnable() { @Override public void run() {
-			assertEquals(5, getDisplayedValue());
-			assertTrue(getStartStopButton().performClick());
-		}});
-	}
-
-	/**
-	 * Verifies the following scenario: time is 0, press start, wait 5+ seconds,
-	 * expect time 5, press lap, wait 4 seconds, expect time 5, press start,
-	 * expect time 5, press lap, expect time 9, press lap, expect time 0.
-	 *
-	 * @throws Throwable
-	 */
-    @Test
-	public void testActivityScenarioRunLapReset() throws Throwable {
-		getActivity().runOnUiThread(new Runnable() { @Override public void run() {
-			assertEquals(0, getDisplayedValue());
-			assertTrue(getStartStopButton().performClick());
-		}});
-		Thread.sleep(5500); // <-- do not run this in the UI thread!
-        runUiThreadTasks();
-		getActivity().runOnUiThread(new Runnable() { @Override public void run() {
-			assertEquals(5, getDisplayedValue());
-			assertTrue(getResetLapButton().performClick());
-		}});
-		Thread.sleep(4000); // <-- do not run this in the UI thread!
-        runUiThreadTasks();
-		getActivity().runOnUiThread(new Runnable() { @Override public void run() {
-			assertEquals(5, getDisplayedValue());
-			assertTrue(getStartStopButton().performClick());
-		}});
-        runUiThreadTasks();
-		getActivity().runOnUiThread(new Runnable() { @Override public void run() {
-			assertEquals(5, getDisplayedValue());
-			assertTrue(getResetLapButton().performClick());
-		}});
-        runUiThreadTasks();
-		getActivity().runOnUiThread(new Runnable() { @Override public void run() {
-			assertEquals(9, getDisplayedValue());
-			assertTrue(getResetLapButton().performClick());
-		}});
-        runUiThreadTasks();
-		getActivity().runOnUiThread(new Runnable() { @Override public void run() {
-			assertEquals(0, getDisplayedValue());
-		}});
-	}
-
-	// auxiliary methods for easy access to UI widgets
+    // auxiliary methods for easy access to UI widgets
 
     protected abstract StopwatchAdapter getActivity();
 
@@ -176,13 +236,10 @@ public abstract class AbstractStopwatchActivityTest {
 		return SEC_PER_MIN * tvToInt(tm) + tvToInt(ts);
 	}
 
-	protected Button getStartStopButton() {
+	protected Button getButton() {
 		return (Button) getActivity().findViewById(R.id.startStop);
 	}
 
-	protected Button getResetLapButton() {
-		return (Button) getActivity().findViewById(R.id.resetLap);
-	}
 
     /**
      * Explicitly runs tasks scheduled to run on the UI thread in case this is required
