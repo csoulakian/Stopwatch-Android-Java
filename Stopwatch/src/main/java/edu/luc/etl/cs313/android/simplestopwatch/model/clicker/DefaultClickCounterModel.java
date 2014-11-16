@@ -3,7 +3,7 @@ package edu.luc.etl.cs313.android.simplestopwatch.model.clicker;
 /**
  * Created by Chrissy on 11/15/2014.
  */
-public class SimpleBoundedCounter implements BoundedCounter {
+public class DefaultClickCounterModel implements ClickCounterModel {
     /** The lower bound of the counter. */
     private final int min;
 
@@ -14,7 +14,7 @@ public class SimpleBoundedCounter implements BoundedCounter {
     private int value;
 
     /** Constructs a bounded counter with the default bounds. */
-    public SimpleBoundedCounter() {
+    public DefaultClickCounterModel() {
         this(0, 99);
     }
 
@@ -25,7 +25,7 @@ public class SimpleBoundedCounter implements BoundedCounter {
      * @param max the upper bound
      * @throws IllegalArgumentException if min > max
      */
-    public SimpleBoundedCounter(final int min, final int max) {
+    public DefaultClickCounterModel(final int min, final int max) {
         if (min >= max) {
             throw new IllegalArgumentException("min >= max");
         }
@@ -56,6 +56,11 @@ public class SimpleBoundedCounter implements BoundedCounter {
         assert dataInvariant() && !isEmpty();
         --value;
         assert dataInvariant();
+    }
+
+    @Override
+    public void reset() {
+        value = min;
     }
 
 

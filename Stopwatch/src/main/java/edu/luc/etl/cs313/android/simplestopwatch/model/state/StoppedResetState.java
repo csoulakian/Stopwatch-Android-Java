@@ -2,9 +2,9 @@ package edu.luc.etl.cs313.android.simplestopwatch.model.state;
 
 import edu.luc.etl.cs313.android.simplestopwatch.R;
 
-class LapRunningState implements StopwatchState {
+class StoppedResetState implements StopwatchState {
 
-	public LapRunningState(final StopwatchSMStateView sm) {
+	public StoppedResetState(final StopwatchSMStateView sm) {
 		this.sm = sm;
 	}
 
@@ -12,29 +12,22 @@ class LapRunningState implements StopwatchState {
 
 	@Override
 	public void onStartStop() {
-		sm.actionStop();
-		sm.toLapStoppedState();
-	}
-
-	@Override
-	public void onLapReset() {
-		sm.toRunningState();
-		sm.actionUpdateView();
+		sm.actionStart();
+		sm.toIncrementState();
 	}
 
 	@Override
 	public void onTick() {
-		sm.actionInc();
-		sm.toLapRunningState();
+		throw new UnsupportedOperationException("onTick");
 	}
 
 	@Override
 	public void updateView() {
-		sm.updateUILaptime();
+		sm.updateUIRuntime();
 	}
 
 	@Override
 	public int getId() {
-		return R.string.LAP_RUNNING;
+		return R.string.STOPPED_RESET;
 	}
 }

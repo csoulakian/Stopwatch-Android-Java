@@ -8,8 +8,10 @@ package edu.luc.etl.cs313.android.simplestopwatch.model.time;
  */
 public interface TimeModel {
 	void resetRuntime();
+    void decRuntime();
 	void incRuntime();
 	public int getRuntime();
-	public void setLaptime();
-	public int getLaptime();
+    boolean isFull();
+    boolean isEmpty();
+
 }

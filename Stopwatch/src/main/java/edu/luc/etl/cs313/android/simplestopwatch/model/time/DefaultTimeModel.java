@@ -9,9 +9,12 @@ import static edu.luc.etl.cs313.android.simplestopwatch.common.Constants.*;
  */
 public class DefaultTimeModel implements TimeModel {
 
-	private int runningTime = getDisplayedValue;
+	int runningTime = 0;
 
-	private int lapTime = -1;
+    protected final int min = 0;
+
+    protected final int max = 99;
+
 
     @Override
 	public void resetRuntime() {
@@ -19,9 +22,18 @@ public class DefaultTimeModel implements TimeModel {
 	}
 
     @Override
-	public void incRuntime() {
-		runningTime = (runningTime - 1);
+	public void decRuntime() {
+		if (!isEmpty()){
+            runningTime = (runningTime - 1);
+        }
 	}
+
+    @Override
+    public void incRuntime() {
+        if (!isFull()){
+            runningTime = (runningTime + 1);
+        }
+    }
 
     @Override
 	public int getRuntime() {
@@ -29,17 +41,13 @@ public class DefaultTimeModel implements TimeModel {
 	}
 
     @Override
-	public void setLaptime() {
-		lapTime = runningTime;
-	}
+    public boolean isFull() {
+        return runningTime >= max;
+    }
 
     @Override
-	public int getLaptime() {
-		return lapTime;
-	}
-
-    protected int getDisplayedValue() {
-        final TextView t = (TextView) getActivity().findViewById(R.id.textview_value);
-        return Integer.parseInt(t.getText().toString().trim());
+    public boolean isEmpty() {
+        return runningTime <= min;
     }
+
 }
