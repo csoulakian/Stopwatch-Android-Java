@@ -15,7 +15,6 @@ import android.widget.TextView;
 import edu.luc.etl.cs313.android.simplestopwatch.R;
 import edu.luc.etl.cs313.android.simplestopwatch.android.StopwatchAdapter;
 
-import static edu.luc.etl.cs313.android.simplestopwatch.common.Constants.SEC_PER_MIN;
 
 /**
  * Abstract GUI-level test superclass of several essential stopwatch scenarios.
@@ -34,6 +33,19 @@ public abstract class AbstractStopwatchActivityTest {
 	public void testActivityCheckTestCaseSetUpProperly() {
 		assertNotNull("activity should be launched successfully", getActivity());
 	}
+
+    /**
+     * Verifies the following scenario: time is 0.
+     *
+     * @throws Throwable
+     */
+    @Test
+    public void testActivityScenarioInit() throws Throwable {
+        getActivity().runOnUiThread(new Runnable() { @Override public void run() {
+            assertEquals(0, getDisplayedValue());
+        }});
+    }
+
 
 	/**
 	 * Verifies the following scenario: time is 0, press button 5 times,
@@ -154,11 +166,13 @@ public abstract class AbstractStopwatchActivityTest {
     //tests from ClickCounter
     // begin-method-testActivityScenarioInc
     @Test
-    public void testActivityScenarioInc() {
-        assertEquals(0, getDisplayedValue());
-        assertTrue(getButton().performClick());
-        assertTrue(getButton().performClick());
-        assertEquals(2, getDisplayedValue());
+    public void testActivityScenarioInc() throws Throwable {
+        getActivity().runOnUiThread(new Runnable() { @Override public void run() {
+            assertEquals(0, getDisplayedValue());
+            assertTrue(getButton().performClick());
+            assertTrue(getButton().performClick());
+            assertEquals(2, getDisplayedValue());
+        }});
     }
 
     // begin-method-testActivityScenarioIncUntilFull
@@ -206,8 +220,7 @@ public abstract class AbstractStopwatchActivityTest {
 
 	protected int getDisplayedValue() {
 		final TextView ts = (TextView) getActivity().findViewById(R.id.seconds);
-		final TextView tm = (TextView) getActivity().findViewById(R.id.minutes);
-		return SEC_PER_MIN * tvToInt(tm) + tvToInt(ts);
+		return tvToInt(ts);
 	}
 
 	protected Button getButton() {

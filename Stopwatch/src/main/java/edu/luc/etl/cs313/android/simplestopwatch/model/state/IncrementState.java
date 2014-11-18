@@ -6,6 +6,7 @@ class IncrementState implements StopwatchState {
 
 	public IncrementState(final StopwatchSMStateView sm) {
 		this.sm = sm;
+
 	}
 
 	private final StopwatchSMStateView sm;
@@ -18,7 +19,13 @@ class IncrementState implements StopwatchState {
 
 	@Override
 	public void onTick() {
-		sm.actionInc();
+        if (sm.getDelay() == 3 || sm.reachMax()) {
+            sm.actionRingTheAlarm();
+            sm.toRunningState();
+        }
+        else{
+            sm.actionInc();
+        }
 	}
 
 	@Override
