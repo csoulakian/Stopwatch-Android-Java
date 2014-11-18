@@ -57,11 +57,11 @@ public class StopwatchActivityTest extends ActivityInstrumentationTestCase2<Stop
         actualTest.testActivityBeepTest();
     }
 
-    public void testAActivityScenarioInc() throws Throwable {
+    public void testActivityScenarioInc() throws Throwable {
         actualTest.testActivityScenarioInc();
     }
 
-    public void testActivityScenarioIncUntilFull() throws Throwable {
+    public void testAActivityScenarioIncUntilFull() throws Throwable {
         actualTest.testActivityScenarioIncUntilFull();
     }
 

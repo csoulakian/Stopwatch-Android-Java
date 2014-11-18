@@ -13,18 +13,17 @@ class IncrementState implements StopwatchState {
 
 	@Override
 	public void onStartStop() {
-		onTick();
+        sm.actionInc();
 		sm.toIncrementState();
 	}
 
 	@Override
 	public void onTick() {
-        if (sm.getDelay() == 3 || sm.reachMax()) {
+        int d = sm.getDelay();
+        sm.setDelay(++d);
+        if (d == 3 || sm.reachMax()) {
             sm.actionRingTheAlarm();
             sm.toRunningState();
-        }
-        else{
-            sm.actionInc();
         }
 	}
 

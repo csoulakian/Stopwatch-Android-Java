@@ -178,23 +178,28 @@ public abstract class AbstractStopwatchActivityTest {
     // begin-method-testActivityScenarioIncUntilFull
     @Test
     public void testActivityScenarioIncUntilFull() throws Throwable {
-            final int max = 10;
-            final int v = getDisplayedValue();
+        final int max = 10;
+        final int v = getDisplayedValue();
+        getActivity().runOnUiThread(new Runnable() { @Override public void run() {
+            assertEquals(0, getDisplayedValue());
+        }});
+        while (v < max) {
             getActivity().runOnUiThread(new Runnable() { @Override public void run() {
-                assertEquals(0, getDisplayedValue());
-                while (v < max) {
-                    assertTrue(getButton().performClick());
-                    assertEquals(v + 1, getDisplayedValue());
-                }
-                //expect beep
+                assertTrue(getButton().performClick());
             }});
-            Thread.sleep(1000); // <-- do not run this in the UI thread!
-            //expect running state
-            runUiThreadTasks();
+            final int i = v+1;
             getActivity().runOnUiThread(new Runnable() { @Override public void run() {
-                assertEquals(9, getDisplayedValue());
+                assertEquals(i, getDisplayedValue());
             }});
+            //expect beep
         }
+        Thread.sleep(1000); // <-- do not run this in the UI thread!
+        //expect running state
+        runUiThreadTasks();
+        getActivity().runOnUiThread(new Runnable() { @Override public void run() {
+            assertEquals(9, getDisplayedValue());
+        }});
+    }
 
     // begin-method-testActivityScenarioRotation
     @Test
