@@ -14,6 +14,7 @@ import edu.luc.etl.cs313.android.simplestopwatch.model.clock.ClockModel;
 import edu.luc.etl.cs313.android.simplestopwatch.model.clock.OnTickListener;
 import edu.luc.etl.cs313.android.simplestopwatch.model.state.StopwatchStateMachine;
 import edu.luc.etl.cs313.android.simplestopwatch.model.time.TimeModel;
+import edu.luc.etl.cs313.android.simplestopwatch.model.clicker.ClickCounterModel;
 
 /**
  * Testcase superclass for the stopwatch state machine model. Unit-tests the state
@@ -96,20 +97,15 @@ public abstract class AbstractStopwatchStateMachineTest {
 		assertTrue(dependency.isStarted());
 		onTickRepeat(5);
 		assertTimeEquals(5);
-		model.onLapReset();
-		assertEquals(R.string.LAP_RUNNING, dependency.getState());
 		assertTrue(dependency.isStarted());
 		onTickRepeat(4);
 		assertTimeEquals(5);
 		model.onStartStop();
-		assertEquals(R.string.LAP_STOPPED, dependency.getState());
 		assertFalse(dependency.isStarted());
 		assertTimeEquals(5);
-		model.onLapReset();
 		assertEquals(R.string.STOPPED, dependency.getState());
 		assertFalse(dependency.isStarted());
 		assertTimeEquals(9);
-		model.onLapReset();
 		assertEquals(R.string.STOPPED, dependency.getState());
 		assertFalse(dependency.isStarted());
 		assertTimeEquals(0);
@@ -145,7 +141,7 @@ class UnifiedMockDependency implements TimeModel, ClockModel, StopwatchUIUpdateL
 
 	private int timeValue = -1, stateId = -1;
 
-	private int runningTime = 0, lapTime = -1;
+	private int runningTime = 0;
 
 	private boolean started = false;
 
@@ -171,7 +167,12 @@ class UnifiedMockDependency implements TimeModel, ClockModel, StopwatchUIUpdateL
 		this.stateId = stateId;
 	}
 
-	@Override
+    @Override
+    public void playDefaultNotification() {
+        playDefaultNotification();
+    }
+
+    @Override
 	public void setOnTickListener(OnTickListener listener) {
 		throw new UnsupportedOperationException();
 	}
@@ -191,7 +192,12 @@ class UnifiedMockDependency implements TimeModel, ClockModel, StopwatchUIUpdateL
 		runningTime = 0;
 	}
 
-	@Override
+    @Override
+    public void decRuntime() {
+        runningTime--;
+    }
+
+    @Override
 	public void incRuntime() {
 		runningTime++;
 	}
@@ -201,13 +207,14 @@ class UnifiedMockDependency implements TimeModel, ClockModel, StopwatchUIUpdateL
 		return runningTime;
 	}
 
-	@Override
-	public void setLaptime() {
-		lapTime = runningTime;
-	}
+    @Override
+    public boolean isFull() {
+        return false;
+    }
 
-	@Override
-	public int getLaptime() {
-		return lapTime;
-	}
+    @Override
+    public boolean isEmpty() {
+        return false;
+    }
+
 }

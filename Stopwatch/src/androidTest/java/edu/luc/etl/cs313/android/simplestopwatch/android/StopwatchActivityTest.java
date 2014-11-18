@@ -37,6 +37,10 @@ public class StopwatchActivityTest extends ActivityInstrumentationTestCase2<Stop
         actualTest.testActivityCheckTestCaseSetUpProperly();
 	}
 
+    public void testActivityScenarioInit() throws Throwable {
+        actualTest.testActivityScenarioInit();
+    }
+
     public void testActivityScenarioRun() throws Throwable {
         actualTest.testActivityScenarioRun();
     }
@@ -53,7 +57,7 @@ public class StopwatchActivityTest extends ActivityInstrumentationTestCase2<Stop
         actualTest.testActivityBeepTest();
     }
 
-    public void testActivityScenarioInc() throws Throwable {
+    public void testAActivityScenarioInc() throws Throwable {
         actualTest.testActivityScenarioInc();
     }
 

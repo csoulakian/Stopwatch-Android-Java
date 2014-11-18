@@ -13,17 +13,16 @@ import edu.luc.etl.cs313.android.simplestopwatch.model.time.TimeModel;
 public class DefaultStopwatchStateMachine implements StopwatchStateMachine {
 
 	public DefaultStopwatchStateMachine(final TimeModel timeModel, final ClockModel
-            clockModel, final ClickCounterModel clickCounterModel) {
+            clockModel) {
 		this.timeModel = timeModel;
 		this.clockModel = clockModel;
-        this.clickCounterModel = clickCounterModel;
 	}
 
 	private final TimeModel timeModel;
 
 	private final ClockModel clockModel;
 
-    private final ClickCounterModel clickCounterModel;
+    int delay = 0;
 
 	/**
 	 * The internal state of this adapter component. Required for the State pattern.
@@ -66,6 +65,19 @@ public class DefaultStopwatchStateMachine implements StopwatchStateMachine {
 	@Override public void actionStart()      { clockModel.start(); }
 	@Override public void actionStop()       { clockModel.stop(); }
 	@Override public void actionDec()        { timeModel.decRuntime(); actionUpdateView(); }
-    @Override public void actionInc()        { timeModel.incRuntime(); actionUpdateView(); }
+    @Override public void actionInc()        { timeModel.incRuntime(); delay++; actionUpdateView();}
 	@Override public void actionUpdateView() { state.updateView(); }
+    @Override public void actionRingTheAlarm() {uiUpdateListener.playDefaultNotification();}
+
+    @Override public int getDelay(){
+        return delay;
+    }
+
+    @Override public boolean reachMax(){
+        return timeModel.isFull();
+    }
+
+    @Override public boolean countedDown(){
+        return timeModel.isEmpty();
+    }
 }

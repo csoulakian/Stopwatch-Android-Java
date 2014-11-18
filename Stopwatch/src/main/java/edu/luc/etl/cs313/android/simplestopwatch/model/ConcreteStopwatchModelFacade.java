@@ -23,13 +23,13 @@ public class ConcreteStopwatchModelFacade implements StopwatchModelFacade {
 
 	private TimeModel timeModel;
 
-    private ClickCounterModel clickCounterModel;
+    //private ClickCounterModel clickCounterModel;
 
 	public ConcreteStopwatchModelFacade() {
 		timeModel = new DefaultTimeModel();
 		clockModel = new DefaultClockModel();
-        clickCounterModel = new DefaultClickCounterModel();
-		stateMachine = new DefaultStopwatchStateMachine(timeModel, clockModel, clickCounterModel);
+        //clickCounterModel = new DefaultClickCounterModel();
+		stateMachine = new DefaultStopwatchStateMachine(timeModel, clockModel);
 		clockModel.setOnTickListener(stateMachine);
 	}
 

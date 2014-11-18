@@ -22,7 +22,12 @@ interface StopwatchSMStateView {
     void actionDec();
 	void actionInc();
 	void actionUpdateView();
+    void actionRingTheAlarm();
 
 	// state-dependent UI updates
 	void updateUIRuntime();
+
+    int getDelay();
+    boolean reachMax();
+    boolean countedDown();
 }
