@@ -28,6 +28,7 @@ interface StopwatchSMStateView {
 	void updateUIRuntime();
 
     int getDelay();
+    void setDelay(int delay);
     boolean reachMax();
     boolean countedDown();
 }

@@ -65,13 +65,15 @@ public class DefaultStopwatchStateMachine implements StopwatchStateMachine {
 	@Override public void actionStart()      { clockModel.start(); }
 	@Override public void actionStop()       { clockModel.stop(); }
 	@Override public void actionDec()        { timeModel.decRuntime(); actionUpdateView(); }
-    @Override public void actionInc()        { timeModel.incRuntime(); delay++; actionUpdateView();}
+    @Override public void actionInc()        { timeModel.incRuntime(); delay = 0; actionUpdateView();}
 	@Override public void actionUpdateView() { state.updateView(); }
     @Override public void actionRingTheAlarm() {uiUpdateListener.playDefaultNotification();}
 
     @Override public int getDelay(){
         return delay;
     }
+
+    @Override public void setDelay(int t) {delay = t;}
 
     @Override public boolean reachMax(){
         return timeModel.isFull();
