@@ -169,7 +169,7 @@ class UnifiedMockDependency implements TimeModel, ClockModel, StopwatchUIUpdateL
 
     @Override
     public void playDefaultNotification() {
-        playDefaultNotification();
+        //playDefaultNotification();
     }
 
     @Override

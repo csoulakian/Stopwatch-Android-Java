@@ -4,14 +4,17 @@ import android.app.Activity;
 import android.content.Context;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnCompletionListener;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.TextView;
 
 import java.io.IOException;
+import java.io.Serializable;
 
 import edu.luc.etl.cs313.android.simplestopwatch.R;
 import edu.luc.etl.cs313.android.simplestopwatch.common.Constants;
@@ -101,6 +104,7 @@ public class StopwatchAdapter extends Activity implements StopwatchUIUpdateListe
     /**
      * Plays the default notification sound (from ClickCounter program)
      */
+    @Override
     public void playDefaultNotification() {
         final Uri defaultRingtoneUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         final MediaPlayer mediaPlayer = new MediaPlayer();
@@ -121,7 +125,4 @@ public class StopwatchAdapter extends Activity implements StopwatchUIUpdateListe
             throw new RuntimeException(ex);
         }
     }
-
-
-
 }
