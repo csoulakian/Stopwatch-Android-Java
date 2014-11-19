@@ -14,7 +14,6 @@ import edu.luc.etl.cs313.android.simplestopwatch.model.clock.ClockModel;
 import edu.luc.etl.cs313.android.simplestopwatch.model.clock.OnTickListener;
 import edu.luc.etl.cs313.android.simplestopwatch.model.state.StopwatchStateMachine;
 import edu.luc.etl.cs313.android.simplestopwatch.model.time.TimeModel;
-import edu.luc.etl.cs313.android.simplestopwatch.model.clicker.ClickCounterModel;
 
 /**
  * Testcase superclass for the stopwatch state machine model. Unit-tests the state

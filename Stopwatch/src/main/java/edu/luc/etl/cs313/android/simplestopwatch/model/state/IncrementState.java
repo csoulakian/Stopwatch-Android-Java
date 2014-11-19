@@ -6,7 +6,6 @@ class IncrementState implements StopwatchState {
 
 	public IncrementState(final StopwatchSMStateView sm) {
 		this.sm = sm;
-
 	}
 
 	private final StopwatchSMStateView sm;

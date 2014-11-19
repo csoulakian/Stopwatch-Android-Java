@@ -42,24 +42,16 @@ public class StopwatchActivityTest extends ActivityInstrumentationTestCase2<Stop
         actualTest.testActivityScenarioInit();
     }
 
-    @UiThreadTest
     public void testFActivityScenarioRun() throws Throwable {
         actualTest.testActivityScenarioRun();
     }
 
-    @UiThreadTest
     public void testEActivityScenarioRunReset() throws Throwable {
         actualTest.testActivityScenarioRunReset();
 	}
 
-    @UiThreadTest
     public void testDActivityScenarioFullRun() throws Throwable {
         actualTest.testActivityScenarioFullRun();
-    }
-
-    @UiThreadTest
-    public void testHActivityBeepTest() throws Throwable {
-        actualTest.testActivityBeepTest();
     }
 
     @UiThreadTest
@@ -71,6 +63,7 @@ public class StopwatchActivityTest extends ActivityInstrumentationTestCase2<Stop
         actualTest.testActivityScenarioIncUntilFull();
     }
 
+    @UiThreadTest
     public void testIActivityScenarioRotation() throws Throwable {
         actualTest.testActivityScenarioRotation();
     }

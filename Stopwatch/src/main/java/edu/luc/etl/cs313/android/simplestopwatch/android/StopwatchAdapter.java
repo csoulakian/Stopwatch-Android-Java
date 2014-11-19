@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.media.MediaPlayer.OnCompletionListener;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -17,7 +16,6 @@ import java.io.IOException;
 import java.io.Serializable;
 
 import edu.luc.etl.cs313.android.simplestopwatch.R;
-import edu.luc.etl.cs313.android.simplestopwatch.common.Constants;
 import edu.luc.etl.cs313.android.simplestopwatch.common.StopwatchUIUpdateListener;
 import edu.luc.etl.cs313.android.simplestopwatch.model.ConcreteStopwatchModelFacade;
 import edu.luc.etl.cs313.android.simplestopwatch.model.StopwatchModelFacade;
@@ -40,7 +38,32 @@ public class StopwatchAdapter extends Activity implements StopwatchUIUpdateListe
 		this.model = model;
 	}
 
-	@Override
+    /**
+     * Plays the default notification sound (from ClickCounter program)
+     */
+    @Override
+    public void playDefaultNotification() {
+        final Uri defaultRingtoneUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        final MediaPlayer mediaPlayer = new MediaPlayer();
+        final Context context = getApplicationContext();
+
+        try {
+            mediaPlayer.setDataSource(context, defaultRingtoneUri);
+            mediaPlayer.setAudioStreamType(AudioManager.STREAM_NOTIFICATION);
+            mediaPlayer.prepare();
+            mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    mp.release();
+                }
+            });
+            mediaPlayer.start();
+        } catch (final IOException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		// inject dependency on view so this adapter receives UI events
@@ -102,27 +125,23 @@ public class StopwatchAdapter extends Activity implements StopwatchUIUpdateListe
     }
 
     /**
-     * Plays the default notification sound (from ClickCounter program)
+     * Preserves the model state for situations such device rotation (from ClickCounter).
      */
     @Override
-    public void playDefaultNotification() {
-        final Uri defaultRingtoneUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        final MediaPlayer mediaPlayer = new MediaPlayer();
-        final Context context = getApplicationContext();
-
-        try {
-            mediaPlayer.setDataSource(context, defaultRingtoneUri);
-            mediaPlayer.setAudioStreamType(AudioManager.STREAM_NOTIFICATION);
-            mediaPlayer.prepare();
-            mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mp) {
-                    mp.release();
-                }
-            });
-            mediaPlayer.start();
-        } catch (final IOException ex) {
-            throw new RuntimeException(ex);
-        }
+    public void onSaveInstanceState(final Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        Log.i(TAG, "onSaveInstanceState");
+        savedInstanceState.putSerializable(getString(R.string.model_key), (Serializable) model);
     }
+
+    /**
+     * Restores the model state after situations such device rotation (from ClickCounter).
+     */
+    @Override
+    public void onRestoreInstanceState(final Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        Log.i(TAG, "onRestoreInstanceState");
+        model = (StopwatchModelFacade) savedInstanceState.getSerializable(getString(R.string.model_key));
+    }
+
 }
