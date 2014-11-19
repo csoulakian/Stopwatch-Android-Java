@@ -1,6 +1,7 @@
 package edu.luc.etl.cs313.android.simplestopwatch.android;
 
 import android.test.ActivityInstrumentationTestCase2;
+import android.test.UiThreadTest;
 
 import edu.luc.etl.cs313.android.simplestopwatch.test.android.AbstractStopwatchActivityTest;
 
@@ -41,22 +42,27 @@ public class StopwatchActivityTest extends ActivityInstrumentationTestCase2<Stop
         actualTest.testActivityScenarioInit();
     }
 
-    public void testDActivityScenarioRun() throws Throwable {
+    @UiThreadTest
+    public void testFActivityScenarioRun() throws Throwable {
         actualTest.testActivityScenarioRun();
     }
 
+    @UiThreadTest
     public void testEActivityScenarioRunReset() throws Throwable {
         actualTest.testActivityScenarioRunReset();
 	}
 
-    public void testFActivityScenarioFullRun() throws Throwable {
+    @UiThreadTest
+    public void testDActivityScenarioFullRun() throws Throwable {
         actualTest.testActivityScenarioFullRun();
     }
 
+    @UiThreadTest
     public void testHActivityBeepTest() throws Throwable {
         actualTest.testActivityBeepTest();
     }
 
+    @UiThreadTest
     public void testCActivityScenarioInc() throws Throwable {
         actualTest.testActivityScenarioInc();
     }

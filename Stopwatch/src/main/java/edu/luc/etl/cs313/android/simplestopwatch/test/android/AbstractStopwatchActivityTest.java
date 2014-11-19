@@ -167,13 +167,20 @@ public abstract class AbstractStopwatchActivityTest {
     // begin-method-testActivityScenarioInc
     @Test
     public void testActivityScenarioInc() throws Throwable {
+        getActivity();
+            assertEquals(0, getDisplayedValue());
+            assertTrue(getButton().performClick());
+            assertTrue(getButton().performClick());
+            assertEquals(2, getDisplayedValue());
+    }
+    /*public void testActivityScenarioInc() throws Throwable {
         getActivity().runOnUiThread(new Runnable() { @Override public void run() {
             assertEquals(0, getDisplayedValue());
             assertTrue(getButton().performClick());
             assertTrue(getButton().performClick());
             assertEquals(2, getDisplayedValue());
         }});
-    }
+    }*/
 
     // begin-method-testActivityScenarioIncUntilFull
     @Test
