@@ -178,28 +178,19 @@ public abstract class AbstractStopwatchActivityTest {
     // begin-method-testActivityScenarioIncUntilFull
     @Test
     public void testActivityScenarioIncUntilFull() throws Throwable {
-        final int max = 10;
-        final int v = getDisplayedValue();
         getActivity().runOnUiThread(new Runnable() { @Override public void run() {
             assertEquals(0, getDisplayedValue());
-        }});
-        while (v < max) {
-            getActivity().runOnUiThread(new Runnable() { @Override public void run() {
+            for (int i = 0; i < 99; i++){
                 assertTrue(getButton().performClick());
-            }});
-            final int i = v+1;
-            getActivity().runOnUiThread(new Runnable() { @Override public void run() {
-                assertEquals(i, getDisplayedValue());
-            }});
-            //expect beep
-        }
-        Thread.sleep(1000); // <-- do not run this in the UI thread!
-        //expect running state
-        runUiThreadTasks();
-        getActivity().runOnUiThread(new Runnable() { @Override public void run() {
-            assertEquals(9, getDisplayedValue());
+            }
+            assertEquals(99, getDisplayedValue());
+            assertTrue(getButton().performClick());
+            assertEquals(0, getDisplayedValue());
+            assertTrue(getButton().performClick());
         }});
     }
+
+
 
     // begin-method-testActivityScenarioRotation
     @Test
@@ -227,6 +218,7 @@ public abstract class AbstractStopwatchActivityTest {
 		final TextView ts = (TextView) getActivity().findViewById(R.id.seconds);
 		return tvToInt(ts);
 	}
+
 
 	protected Button getButton() {
 		return (Button) getActivity().findViewById(R.id.startStop);

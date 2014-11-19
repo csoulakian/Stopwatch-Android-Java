@@ -18,7 +18,6 @@ class StoppedResetState implements StopwatchState {
 
 	@Override
 	public void onTick() {
-
 	}
 
 	@Override
