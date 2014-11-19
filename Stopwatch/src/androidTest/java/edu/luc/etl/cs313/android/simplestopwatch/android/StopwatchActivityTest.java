@@ -33,39 +33,39 @@ public class StopwatchActivityTest extends ActivityInstrumentationTestCase2<Stop
 
     private AbstractStopwatchActivityTest actualTest;
 
-	public void testActivityCheckTestCaseSetUpProperly() {
+	public void testAActivityCheckTestCaseSetUpProperly() {
         actualTest.testActivityCheckTestCaseSetUpProperly();
 	}
 
-    public void testActivityScenarioInit() throws Throwable {
+    public void testBActivityScenarioInit() throws Throwable {
         actualTest.testActivityScenarioInit();
     }
 
-    public void testActivityScenarioRun() throws Throwable {
+    public void testDActivityScenarioRun() throws Throwable {
         actualTest.testActivityScenarioRun();
     }
 
-    public void testActivityScenarioRunReset() throws Throwable {
+    public void testEActivityScenarioRunReset() throws Throwable {
         actualTest.testActivityScenarioRunReset();
 	}
 
-    public void testActivityScenarioFullRun() throws Throwable {
+    public void testFActivityScenarioFullRun() throws Throwable {
         actualTest.testActivityScenarioFullRun();
     }
 
-    public void testActivityBeepTest() throws Throwable {
+    public void testHActivityBeepTest() throws Throwable {
         actualTest.testActivityBeepTest();
     }
 
-    public void testActivityScenarioInc() throws Throwable {
+    public void testCActivityScenarioInc() throws Throwable {
         actualTest.testActivityScenarioInc();
     }
 
-    public void testAActivityScenarioIncUntilFull() throws Throwable {
+    public void testGActivityScenarioIncUntilFull() throws Throwable {
         actualTest.testActivityScenarioIncUntilFull();
     }
 
-    public void testActivityScenarioRotation() throws Throwable {
+    public void testIActivityScenarioRotation() throws Throwable {
         actualTest.testActivityScenarioRotation();
     }
 }
