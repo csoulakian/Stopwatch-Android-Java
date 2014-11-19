@@ -35,7 +35,7 @@
             android:id="@+id/seconds"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/seconds"
+            android:text="00"
             android:textSize="80sp"
             android:textStyle="bold" />
     </RelativeLayout>
@@ -52,7 +52,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="onStartStop"
-            android:text="@string/startStop" />
+            android:text="Start/Stop" />
 
     </RelativeLayout>
 

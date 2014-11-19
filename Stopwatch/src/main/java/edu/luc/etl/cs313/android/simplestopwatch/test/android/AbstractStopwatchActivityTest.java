@@ -8,6 +8,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 import android.app.Activity;
+import android.os.SystemClock;
 import android.view.View;
 import android.content.pm.ActivityInfo;
 import android.widget.Button;
@@ -56,15 +57,15 @@ public abstract class AbstractStopwatchActivityTest {
     @Test
 	public void testActivityScenarioRun() throws Throwable {
 		getActivity().runOnUiThread(new Runnable() { @Override public void run() {
-			assertEquals(0, getDisplayedValue());
-			assertTrue(getButton().performClick());
+            assertEquals(0, getDisplayedValue());
+            assertTrue(getButton().performClick());
             assertTrue(getButton().performClick());
             assertTrue(getButton().performClick());
             assertTrue(getButton().performClick());
             assertTrue(getButton().performClick());
             assertEquals(5, getDisplayedValue());
-		}});
-		Thread.sleep(4000); // <-- do not run this in the UI thread!
+        }});
+		Thread.sleep(5000); // <-- do not run this in the UI thread!
         runUiThreadTasks();
 		getActivity().runOnUiThread(new Runnable() { @Override public void run() {
             //expect running state
@@ -89,11 +90,11 @@ public abstract class AbstractStopwatchActivityTest {
             assertTrue(getButton().performClick());
             assertEquals(5, getDisplayedValue());
 		}});
-		Thread.sleep(4000); // <-- do not run this in the UI thread!
+		SystemClock.sleep(5000); // <-- do not run this in the UI thread!
+        assertEquals(4, getDisplayedValue());
         runUiThreadTasks();
 		getActivity().runOnUiThread(new Runnable() { @Override public void run() {
             //expect running state
-            assertEquals(4, getDisplayedValue());
 			assertTrue(getButton().performClick());
 		}});
         runUiThreadTasks();
@@ -119,48 +120,13 @@ public abstract class AbstractStopwatchActivityTest {
             assertTrue(getButton().performClick());
             assertTrue(getButton().performClick());
         }});
-        Thread.sleep(4000); // <-- do not run this in the UI thread!
+        SystemClock.sleep(5000); // <-- do not run this in the UI thread!
         runUiThreadTasks();
-        getActivity().runOnUiThread(new Runnable() { @Override public void run() {
-            //expect running state
-            assertEquals(4, getDisplayedValue());
-        }});
-        Thread.sleep(4000); // <-- do not run this in the UI thread!
+        assertEquals(4, getDisplayedValue());
+        SystemClock.sleep(5000); // <-- do not run this in the UI thread!
         runUiThreadTasks();
-        getActivity().runOnUiThread(new Runnable() { @Override public void run() {
-            //expect stopped state
-            assertEquals(0, getDisplayedValue());
+        assertEquals(0, getDisplayedValue());
             //expect indefinite beeping
-        }});
-    }
-
-    /**
-     * Verifies the following scenario: time is 0, press button 5 times,
-     * wait 8 seconds, expect time 0, indefinite beeping, press button, no beeping,
-     * expect time 0.
-     *
-     * @throws Throwable
-     */
-    @Test
-    public void testActivityBeepTest() throws Throwable {
-        getActivity().runOnUiThread(new Runnable() { @Override public void run() {
-            assertEquals(0, getDisplayedValue());
-            assertTrue(getButton().performClick());
-            assertTrue(getButton().performClick());
-            assertTrue(getButton().performClick());
-            assertTrue(getButton().performClick());
-            assertTrue(getButton().performClick());
-        }});
-        Thread.sleep(8000); // <-- do not run this in the UI thread!
-        runUiThreadTasks();
-        getActivity().runOnUiThread(new Runnable() { @Override public void run() {
-            //expect stopped state
-            assertEquals(0, getDisplayedValue());
-            //expect indefinite beeping
-            assertTrue(getButton().performClick());
-            //expect no beeping
-            assertEquals(0, getDisplayedValue());
-        }});
     }
 
     //tests from ClickCounter
@@ -173,21 +139,13 @@ public abstract class AbstractStopwatchActivityTest {
             assertTrue(getButton().performClick());
             assertEquals(2, getDisplayedValue());
     }
-    /*public void testActivityScenarioInc() throws Throwable {
-        getActivity().runOnUiThread(new Runnable() { @Override public void run() {
-            assertEquals(0, getDisplayedValue());
-            assertTrue(getButton().performClick());
-            assertTrue(getButton().performClick());
-            assertEquals(2, getDisplayedValue());
-        }});
-    }*/
 
     // begin-method-testActivityScenarioIncUntilFull
     @Test
     public void testActivityScenarioIncUntilFull() throws Throwable {
-        getActivity().runOnUiThread(new Runnable() { @Override public void run() {
+        getActivity().runOnUiThread(new Runnable() {@Override public void run() {
             assertEquals(0, getDisplayedValue());
-            for (int i = 0; i < 99; i++){
+            for (int i = 0; i < 99; i++) {
                 assertTrue(getButton().performClick());
             }
             assertEquals(99, getDisplayedValue());
@@ -197,19 +155,21 @@ public abstract class AbstractStopwatchActivityTest {
         }});
     }
 
-
-
     // begin-method-testActivityScenarioRotation
     @Test
-    public void testActivityScenarioRotation() {
-        assertEquals(0, getDisplayedValue());
-        assertTrue(getButton().performClick());
-        assertTrue(getButton().performClick());
-        assertEquals(2, getDisplayedValue());
-        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        assertEquals(2, getDisplayedValue());
-        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        assertEquals(2, getDisplayedValue());
+    public void testActivityScenarioRotation() throws Throwable {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+            assertEquals(0, getDisplayedValue());
+            assertTrue(getButton().performClick());
+            assertTrue(getButton().performClick());
+            assertEquals(2, getDisplayedValue());
+            getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+            assertEquals(2, getDisplayedValue());
+            getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+            assertEquals(2, getDisplayedValue());
+        }});
     }
 
 

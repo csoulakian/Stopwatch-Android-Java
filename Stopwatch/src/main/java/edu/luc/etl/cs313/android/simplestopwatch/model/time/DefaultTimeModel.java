@@ -1,11 +1,9 @@
 package edu.luc.etl.cs313.android.simplestopwatch.model.time;
 
-import android.widget.TextView;
-
-import static edu.luc.etl.cs313.android.simplestopwatch.common.Constants.*;
-
 /**
- * An implementation of the stopwatch data model.
+ * An implementation of the stopwatch time model that counts up and down.
+ * Counting up represents an embedded clickcounter and counting down
+ * represents a regular stopwatch.
  */
 public class DefaultTimeModel implements TimeModel {
 
