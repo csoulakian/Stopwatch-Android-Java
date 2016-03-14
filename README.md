@@ -1,4 +1,10 @@
-[Unit Tests Google Doc](https://docs.google.com/document/d/1IuC2zztAx2cJOPHNSCv2N60atLTbsYD412TMBkFZJvk/edit?usp=sharing)
+Loyola University Chicago
+
+Fall 2014
+
+COMP 313 - Intermediate Object Oriented Development
+
+Project 4 - Pair Project
 
 # Background
 
@@ -95,3 +101,6 @@ You can also use Gradle:
 * add Gradle code coverage plugin
 * add Gradle dependency/stability metrics plugin
 * consider other useful Gradle code quality plugins (checkstyle etc.)
+
+
+[Unit Tests Google Doc](https://docs.google.com/document/d/1IuC2zztAx2cJOPHNSCv2N60atLTbsYD412TMBkFZJvk/edit?usp=sharing)
